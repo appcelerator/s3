@@ -76,7 +76,9 @@ module S3
       headers.each do |key, value|
         request[key] = value
       end
-
+      
+      request["x-amz-server-side-encryption"]="AES256"
+      
       if body
         if body.respond_to?(:read)
           request.body_stream = body
