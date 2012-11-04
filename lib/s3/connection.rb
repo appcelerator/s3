@@ -30,6 +30,7 @@ module S3
       @debug = options.fetch(:debug, false)
       @timeout = options.fetch(:timeout, 60)
       @proxy = options.fetch(:proxy, nil)
+      @x_amz_server_side_encryption = options.fetch(:x_amz_server_side_encryption)
       @chunk_size = options.fetch(:chunk_size, 1048576)
     end
 
@@ -77,7 +78,9 @@ module S3
         request[key] = value
       end
       
-      request["x-amz-server-side-encryption"]="AES256"
+      if @x_amz_server_side_encryption == "true"
+        request["x-amz-server-side-encryption"] = "AES256"
+      end
       
       if body
         if body.respond_to?(:read)
